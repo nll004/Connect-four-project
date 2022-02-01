@@ -5,42 +5,53 @@
  * board fills (tie)
  */
 
-var WIDTH = 7;
-var HEIGHT = 6;
+const WIDTH = 7;
+const HEIGHT = 6;
 
-var currPlayer = 1; // active player: 1 or 2
-var board = []; // array of rows, each row is array of cells  (board[y][x])
+let currPlayer = 1; // active player: 1 or 2
+let board = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
 
+// TODO: set "board" to empty HEIGHT x WIDTH matrix array
 function makeBoard() {
-  // TODO: set "board" to empty HEIGHT x WIDTH matrix array
+  const rows = [];
+  for (let wd = 0; wd < WIDTH; wd++){
+      rows.push([]);
+  }
+  for(let ht = 0; ht < HEIGHT; ht++){
+    board.push(rows);
+  }
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
-  // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
-
-  // TODO: add comment for this code
-  var top = document.createElement("tr");
+  // select html table element id= board
+  const htmlBoard = document.querySelector('#board');
+  // create table row elements as the header, set id = column-top
+  const top = document.createElement("tr");
   top.setAttribute("id", "column-top");
+  // add click event listener to the top row, which triggers handleClick()
   top.addEventListener("click", handleClick);
 
-  for (var x = 0; x < WIDTH; x++) {
-    var headCell = document.createElement("td");
+  // looping over width again to create td headcell columns in html
+  for (let x = 0; x < WIDTH; x++) {
+    const headCell = document.createElement("td");
+    // give each headcell an individual id of 'id' of x (0-width)
     headCell.setAttribute("id", x);
     top.append(headCell);
   }
   htmlBoard.append(top);
 
-  // TODO: add comment for this code
-  for (var y = 0; y < HEIGHT; y++) {
+  // using variables y(HEIGHT) and x(WIDTH) to loop over and create rows and columns
+  for (let y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
-    for (var x = 0; x < WIDTH; x++) {
+    for (let x = 0; x < WIDTH; x++) {
       const cell = document.createElement("td");
+      // using y and x index to create a grid of ids id = 'y-x'
       cell.setAttribute("id", `${y}-${x}`);
       row.append(cell);
     }
@@ -52,6 +63,7 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
+
   return 0;
 }
 
@@ -59,22 +71,24 @@ function findSpotForCol(x) {
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
+  // let document.createElement('div')
+  // DOMvariable.append()
 }
 
 /** endGame: announce game end */
 
 function endGame(msg) {
-  // TODO: pop up alert message
+    alert(msg)
 }
 
 /** handleClick: handle click of column top to play piece */
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  var x = +evt.target.id;
+  let x = +evt.target.id;
 
   // get next spot in column (if none, ignore click)
-  var y = findSpotForCol(x);
+  const y = findSpotForCol(x);
   if (y === null) {
     return;
   }
