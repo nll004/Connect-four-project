@@ -5,7 +5,7 @@
  * board fills (tie)
  */
 
-const WIDTH = 7;
+const WIDTH = prompt('How many squares wide do you want your board?');
 const HEIGHT = 6;
 
 let currPlayer = 1; // active player: 1 or 2
@@ -20,18 +20,20 @@ function makeBoard() {
   for (let y = 0; y < HEIGHT; y++) {
     board.push(Array.from({ length: WIDTH }));
   }
+  console.log(board);
 }
+
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
+   const htmlBoard = document.querySelector('#board');
   // select html table element id= board
-  const htmlBoard = document.querySelector('#board');
-  // create table row elements as the header, set id = column-top
-  const top = document.createElement("tr");
-  top.setAttribute("id", "column-top");
-  // add click event listener to the top row, which triggers handleClick()
-  top.addEventListener("click", handleClick);
+   const top = document.createElement("tr");
+   // create table row elements as the header, set id = column-top
+   top.setAttribute("id", "column-top");
+   top.addEventListener("click", handleClick);
+    // add click event listener to the top row, which triggers handleClick()
 
   // looping over width again to create td headcell columns in html
   for (let x = 0; x < WIDTH; x++) {
@@ -62,6 +64,7 @@ function findSpotForCol(x) {
     if (!board[y][x]) {
       return y;
     }
+    console.log(y)
   }
   return null;
 }
@@ -73,31 +76,22 @@ function placeInTable(y, x) {
   let newDiv = document.createElement('div')
   newDiv.setAttribute('class', `player${currPlayer}`)
   newDiv.classList.add('piece');
-
-  newDiv.style.top = -50 * (y + 2);
-
-  const place = document.getElementById(`${y}-${x}`);
-  place.append(newDiv);
+  const setDiv = document.getElementById(`${y}-${x}`);
+  setDiv.append(newDiv);
 }
 
 /** endGame: announce game end */
-
-function endGame(msg) {
-    alert(msg);
-}
+// Removed and added to handleClick
 
 /** handleClick: handle click of column top to play piece */
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  let x = +evt.target.id;
-
-  // get next spot in column (if none, ignore click)
+  let x = evt.target.id;
   const y = findSpotForCol(x);
   if (y === null) {
     return;
   }
-
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   board[y][x] = currPlayer;
@@ -105,7 +99,7 @@ function handleClick(evt) {
 
   // check for win
   if (checkForWin()) {
-    return endGame(`Player ${currPlayer} won!`);
+    return alert(`Player ${currPlayer} won!`);
   }
 
   // check for tie
@@ -113,6 +107,7 @@ function handleClick(evt) {
   if (board.every(row => row.every(cell => cell))) {
     return endGame('Tie!');
   }
+
   // switch players
   // if currPlayer === 1, currPlayer is set to 2
   currPlayer = currPlayer === 1 ? 2 : 1;
@@ -139,6 +134,7 @@ function checkForWin() {
   // TODO: read and understand this code. Add comments to help you.
 
   for (let y = 0; y < HEIGHT; y++) {
+    // loop through x for every index of y
     for (let x = 0; x < WIDTH; x++) {
       const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
       const vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
@@ -152,5 +148,11 @@ function checkForWin() {
   }
 }
 
-makeBoard();
-makeHtmlBoard();
+// Debugging to prevent board from being too small before creating board
+if (WIDTH >= HEIGHT){
+  makeBoard();
+  makeHtmlBoard();
+}
+else {
+  alert(`Your board must be wider than ${HEIGHT}.`)
+}
