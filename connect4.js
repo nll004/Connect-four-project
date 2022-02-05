@@ -23,7 +23,6 @@ function makeBoard() {
   console.log(board);
 }
 
-
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
@@ -64,7 +63,7 @@ function findSpotForCol(x) {
     if (!board[y][x]) {
       return y;
     }
-    console.log(y)
+    //console.log(y)
   }
   return null;
 }
@@ -105,7 +104,7 @@ function handleClick(evt) {
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
   if (board.every(row => row.every(cell => cell))) {
-    return endGame('Tie!');
+    return alert('Tie!');
   }
 
   // switch players
